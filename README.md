@@ -43,11 +43,11 @@ Each repository focuses on one aspect of the robot and documents it in depth.
 
 | Repository | What it is |
 |---|---|
-| [**Hexapod-Firmware**](https://github.com/ggldnl/Hexapod-Firmware) | C++17 firmware for the Servo2040: state machine, gait generator, IK, and the wire protocol |
-| [**Hexapod-Controller**](https://github.com/ggldnl/Hexapod-Controller) | Pi-side Python client: opens the link, provisions the board from YAML configs, streams velocity/body pose setpoints, reads telemetry. Includes a servo calibration tool |
-| [**Hexapod-Simulation**](https://github.com/ggldnl/Hexapod-Simulation) | PyBullet physics sim and a viser 3D visualizer, both driving the host-compiled firmware core |
-| [**Hexapod-Hardware**](https://github.com/ggldnl/Hexapod-Hardware) | 3D-printable parts, full BOM and a step-by-step assembly guide |
-| [**Hexapod-PCB**](https://github.com/ggldnl/Hexapod-PCB) | Optional custom PCB that simplifies the wiring and makes the assembly much cleaner |
+| [**H-0996-Firmware**](https://github.com/ggldnl/H-0996-Firmware) | C++17 firmware for the Servo2040: state machine, gait generator, IK, and the wire protocol |
+| [**H-0996-Controller**](https://github.com/ggldnl/H-0996-Controller) | Pi-side Python client: opens the link, provisions the board from YAML configs, streams velocity/body pose setpoints, reads telemetry. Includes a servo calibration tool |
+| [**H-0996-Simulation**](https://github.com/ggldnl/H-0996-Simulation) | PyBullet physics sim and a viser 3D visualizer, both driving the host-compiled firmware core |
+| [**H-0996-Hardware**](https://github.com/ggldnl/H-0996-Hardware) | 3D-printable parts, full BOM and a step-by-step assembly guide |
+| [**H-0996-PCB**](https://github.com/ggldnl/H-0996-PCB) | Optional custom PCB that simplifies the wiring and makes the assembly much cleaner |
 
 </div>
 
@@ -57,31 +57,31 @@ For those working in a ROS2 ecosystem:
 
 | Repository | What it is |
 |---|---|
-| [**Hexapod-ROS-Python**](https://github.com/ggldnl/Hexapod-ROS-Python) | Wraps the Python controller as a ROS2 node, exposing the robot through topics, actions and services |
-| [**Hexapod-Gazebo**](https://github.com/ggldnl/Hexapod-Gazebo) | Launch files to load the robot in Gazebo, taking the URDF and meshes straight from Hexapod-Hardware |
+| [**H-0996-ROS-Python**](https://github.com/ggldnl/H-0996-ROS-Python) | Wraps the Python controller as a ROS2 node, exposing the robot through topics, actions and services |
+| [**H-0996-Gazebo**](https://github.com/ggldnl/H-0996-Gazebo) | Launch files to load the robot in Gazebo, taking the URDF and meshes straight from H-0996-Hardware |
 
 </div>
 
 ## ✨ Highlights
 
-- **Fully documented binary protocol.** A compact HDLC-style framing (CRC-16/CCITT) over UART at 921600 baud, with three message kinds: fire-and-forget setpoints, request/reply queries, and acknowledged provisioning. Every opcode and payload is [specified byte-by-byte](https://github.com/ggldnl/Hexapod-Firmware#-communication-protocol).
+- **Fully documented binary protocol.** A compact HDLC-style framing (CRC-16/CCITT) over UART at 921600 baud, with three message kinds: fire-and-forget setpoints, request/reply queries, and acknowledged provisioning. Every opcode and payload is [specified byte-by-byte](https://github.com/ggldnl/H-0996-Firmware#-communication-protocol).
 - **Configure without reflashing.** The board ships with baked-in defaults and is fully functional standalone, but the Pi pushes the whole robot description (geometry, leg mounts, gait parameters, limits, per-servo calibration) from a single YAML file at connect time.
 - **The simulation runs the real firmware.** The same C++ core is compiled into a shared library and driven by the same Python client through an in-process transport. Sim and hardware exercise the code, so what you tune in simulation is what the robot executes.
 - **Safety.** A command watchdog sits the robot down and de-energizes it if the link goes quiet for 500 ms, a software over-current cutoff trips an emergency stop, and every command is clamped against velocity, joint and body-pose limits.
 
 ## 🚀 Getting started
 
-**Try it without hardware.** [Hexapod-Simulation](https://github.com/ggldnl/Hexapod-Simulation) pulls in the firmware, controller and hardware repos as submodules, compiles the firmware core and runs it under PyBullet or viser (optionally including teleop with a gamepad):
+**Try it without hardware.** [H-0996-Simulation](https://github.com/ggldnl/H-0996-Simulation) pulls in the firmware, controller and hardware repos as submodules, compiles the firmware core and runs it under PyBullet or viser (optionally including teleop with a gamepad):
 
 ```bash
-git clone --recursive https://github.com/ggldnl/Hexapod-Simulation.git
-cd Hexapod-Simulation
+git clone --recursive https://github.com/ggldnl/H-0996-Simulation.git
+cd H-0996-Simulation
 ./bridge/build.sh
 mamba env create -f environment.yml && mamba activate hexapod-sim
 python -m simulation.bullet.main  # simulation.viser.main, simulation.bullet.teleop
 ```
 
-**Drive the real robot.** Flash [the firmware](https://github.com/ggldnl/Hexapod-Firmware) on the Servo2040, install [the controller](https://github.com/ggldnl/Hexapod-Controller) on the Pi, and you are three lines away from walking:
+**Drive the real robot.** Flash [the firmware](https://github.com/ggldnl/H-0996-Firmware) on the Servo2040, install [the controller](https://github.com/ggldnl/H-0996-Controller) on the Pi, and you are three lines away from walking:
 
 ```python
 from hexapod import connect
@@ -93,7 +93,7 @@ print(bot.get_telemetry())      # state, odometry, voltage, current
 bot.shutdown()                  # sit down and de-energize the motors
 ```
 
-**Build one.** Start from [Hexapod-Hardware](https://github.com/ggldnl/Hexapod-Hardware) for the printed parts, the BOM and the assembly guide, then add [Hexapod-PCB](https://github.com/ggldnl/Hexapod-PCB) if you want to skip the wiring mess.
+**Build one.** Start from [H-0996-Hardware](https://github.com/ggldnl/H-0996-Hardware) for the printed parts, the BOM and the assembly guide, then add [H-0996-PCB](https://github.com/ggldnl/H-0996-PCB) if you want to skip the wiring mess.
 
 ## 🔭 What's coming
 
