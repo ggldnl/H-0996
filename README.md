@@ -1,4 +1,4 @@
-# 🦾 The Hexapod Project
+# H-0996
 
 **A fully open-source, low-cost six-legged robot.**
 
